@@ -30,6 +30,7 @@ function getName(character) {
  */
 function getFilmCount(character) {
   // TODO: Add your code inside the functions (others below).
+    return character.films.length;
 
 }
 
@@ -43,6 +44,12 @@ function getFilmCount(character) {
 */
 function getSecondStarshipName(character) {
   // TODO: Add your code here.
+    if (character.starships.length > 1){
+      return character.starships[1].name;
+    }
+    else if (character.starships.length <= 1){
+      return `none`;
+    }
 }
 
 /**
@@ -56,6 +63,7 @@ function getSecondStarshipName(character) {
  */
 function getSummary(character) {
   // TODO: Add your code here.
+  return `${character.name}, ${character.height}cm, ${character.mass}kg. Featured in ${character.films.length} films.`
 }
 
 /**
@@ -68,6 +76,7 @@ function getSummary(character) {
 */
 function getVehiclesCostInCreditsSumTotal(character) {
   // TODO: Add your code here.
+  return character.vehicles.reduce((a,b) => {return a + b.cost_in_credits},0)
 }
 
 /**
@@ -82,6 +91,10 @@ function getVehiclesCostInCreditsSumTotal(character) {
 */
 function getStarshipPassengerAndCrewSumTotal(character) {
   // TODO: Add your code here.
+  let allCrew = character.starships.reduce((a,b) => {return a + b.crew},0);
+  let allPass = character.starships.reduce((a,b) => {return a + b.passengers},0);
+  let allPeople = allCrew + allPass;
+  return allPeople;
 }
 
 /**
@@ -95,10 +108,17 @@ function getStarshipPassengerAndCrewSumTotal(character) {
  * The Error must mention the name of your favorite _extra cheesy_ movie.
  *
  * Given film #1, expected output: `A New Hope`
- * Given film #7, expected error: `There are only 3 Star Wars movies. Flan fiction excluded.`
+ * Given film #7, expected error: `There are only 3 Star Wars movies. Fan fiction excluded.`
 */
 function getNthFilm(character, filmNumber) {
   // TODO: Add your code here.
+  let arrayFilm = filmNumber - 1;
+  if (filmNumber >= 1 && filmNumber <=3){
+    return character.films[arrayFilm];
+  }
+  else {
+    return `There are only 3 Star Wars movies. Fan fiction excluded.`
+  }
 }
 
 /**
@@ -113,8 +133,10 @@ function getNthFilm(character, filmNumber) {
 */
 function getCargoCapacityTotal(character) {
   // TODO: Add your code here.
+  let vehiclesCap = character.vehicles.reduce((a,b) => {return Number(a) + Number(b.cargo_capacity)},0);
+  let starshipCap = character.starships.reduce((a,b) => {return Number(a) + Number(b.cargo_capacity)},0);
+  return vehiclesCap + starshipCap;
 }
-
 /**
  * ### Challenge `getFastestStarshipName`
  * Stretch Goal 💪
@@ -128,6 +150,21 @@ function getCargoCapacityTotal(character) {
 */
 function getFastestStarshipName(character) {
   // TODO: Add your code here.
+  if (character.starships.length == 0){
+    return `none`;
+  }
+  let speedArray = [];
+  for (let i = 0; i < character.starships.length; i++){
+    let maxSpdString = character.starships[i].max_atmosphering_speed;
+    let maxSpdInt = Number(maxSpdString);
+    speedArray.push(maxSpdInt);
+  }
+  speedArray.sort((a,b)=> {return b- a});
+  for (let i=0; i < character.starships.length; i++){
+    if (speedArray[0] == character.starships[i].max_atmosphering_speed){
+      return character.starships[i].name;
+    }
+  }
 }
 
 /**
@@ -143,6 +180,21 @@ function getFastestStarshipName(character) {
 */
 function getLargestCargoStarshipModelName(character) {
   // TODO: Add your code here.
+  if (character.starships.length == 0){
+    return `none`;
+  }
+  let largestCargo = [];
+  for (let i = 0; i < character.starships.length; i++){
+    let maxCargoString = character.starships[i].cargo_capacity;
+    let maxCargoInt = Number(maxCargoString);
+    largestCargo.push(maxCargoInt);
+  }
+  largestCargo.sort((a,b)=> {return b- a});
+  for (let i=0; i < character.starships.length; i++){
+    if (largestCargo[0] == character.starships[i].cargo_capacity){
+      return character.starships[i].model;
+    }
+  }
 }
 
 /**
@@ -157,6 +209,30 @@ function getLargestCargoStarshipModelName(character) {
 */
 function getSlowestVehicleOrStarshipName(character) {
   // TODO: Add your code here.
+  let newArray = [];
+  for (let i = 0; i < character.vehicles.length; i++){
+    let speedVString = character.vehicles[i].max_atmosphering_speed;
+    let speedVInt = Number(speedVString);
+    newArray.push(speedVInt);
+  }
+   for (let i = 0; i < character.starships.length; i++){
+    let speedSString = character.starships[i].max_atmosphering_speed;
+    let speedSInt = Number(speedSString);
+    newArray.push(speedSInt);
+  }
+  newArray.sort((a,b) => a-b);
+  let slowestShip;
+  for (let i = 0; i < character.vehicles.length;i++){
+    if (newArray[0] == character.vehicles[i].max_atmosphering_speed){
+      return slowestShip = character.vehicles[i].name;
+    }
+  }
+    for (let i = 0; i < character.starships.length;i++){
+    if (newArray[0] == character.starships[i].max_atmosphering_speed){
+       return slowestShip = character.starships[i].name;
+    }
+  }
+  return slowestShip;
 }
 
 
